@@ -12,7 +12,6 @@ def monte_carlo_integrate(func, a, b, y_min, y_max, num_points):
     x = np.random.uniform(a, b, num_points)
     y = np.random.uniform(y_min, y_max, num_points)
     under_curve = np.sum(y < func(x))
-    print(under_curve)
     area = (b - a) * (y_max - y_min) * (under_curve / num_points)
     return area
 
@@ -21,10 +20,19 @@ if __name__ == "__main__":
     a = 0  # Нижня межа
     b = 2  # Верхня межа
 
-    # Обчислення інтеграла
+    # Обчислення інтеграла за допомогою quad
     result, error = spi.quad(f, a, b)
 
-    print("Інтеграл: ", result, error)
+    print("Інтеграл, визначений за допомогою quad: ", result, error)
+
+    mc_result = monte_carlo_integrate(f, a, b, 0, 4, 100_000)
+    print("Інтеграл, визначений за допомогою методу Монте-Карло з 100_000 випробуваннями: ", mc_result)
+
+    mc_result2 = monte_carlo_integrate(f, a, b, 0, 4, 1_000_000)
+    print("Інтеграл, визначений за допомогою методу Монте-Карло з 1_000_000 випробуваннями: ", mc_result2)
+
+    mc_result3 = monte_carlo_integrate(f, a, b, 0, 4, 10_000_000)
+    print("Інтеграл, визначений за допомогою методу Монте-Карло з 10_000_000 випробуваннями: ", mc_result3)
 
     # Створення діапазону значень для x
     x = np.linspace(-0.5, 2.5, 400)
@@ -54,5 +62,3 @@ if __name__ == "__main__":
     plt.grid()
     plt.show()
 
-    mc_result = monte_carlo_integrate(f, a, b, 0, 4, 1_000_000)
-    print(result, mc_result)
